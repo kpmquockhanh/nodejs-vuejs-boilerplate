@@ -1,0 +1,31 @@
+# --- Build stage ---
+FROM node:24 AS build
+
+WORKDIR /app
+
+RUN corepack enable
+
+COPY .yarnrc.yml .yarn ./
+COPY package.json yarn.lock ./
+RUN yarn install
+
+COPY . .
+RUN yarn build
+
+# --- Production stage ---
+FROM node:24-slim AS prod
+
+WORKDIR /app
+
+RUN corepack enable
+
+COPY --from=build /app/.yarnrc.yml ./
+COPY --from=build /app/.yarn ./.yarn
+COPY --from=build /app/package.json ./
+COPY --from=build /app/yarn.lock ./
+COPY --from=build /app/node_modules ./node_modules
+COPY --from=build /app/dist ./dist
+COPY --from=build /app/public ./public
+
+EXPOSE 5173
+CMD ["yarn", "preview"]

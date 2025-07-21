@@ -1,0 +1,204 @@
+@use "base";
+@use 'css/404' as notfound;
+@use 'css/dropzone';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Custom CSS Variables for consistent theming */
+    --color-brand-gradient: linear-gradient(135deg, #3b82f6 0%, #d946ef 100%);
+    --color-surface-gradient: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    --color-hero-gradient: linear-gradient(135deg, #eff6ff 0%, #fdf4ff 100%);
+    --color-chat-gradient: linear-gradient(135deg, #f0fdf4 0%, #eff6ff 100%);
+    
+    /* Shadow variables */
+    --shadow-soft: 0 2px 15px -3px rgba(0, 0, 0, 0.07), 0 10px 20px -2px rgba(0, 0, 0, 0.04);
+    --shadow-medium: 0 4px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 30px -5px rgba(0, 0, 0, 0.05);
+    --shadow-strong: 0 10px 40px -10px rgba(0, 0, 0, 0.15), 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    
+    /* Animation variables */
+    --animation-duration: 0.3s;
+    --animation-timing: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}
+
+@layer components {
+  /* Custom gradient utilities */
+  .bg-brand-gradient {
+    background: var(--color-brand-gradient);
+  }
+  
+  .bg-surface-gradient {
+    background: var(--color-surface-gradient);
+  }
+  
+  .bg-hero-gradient {
+    background: var(--color-hero-gradient);
+  }
+  
+  .bg-chat-gradient {
+    background: var(--color-chat-gradient);
+  }
+  
+  /* Custom shadow utilities */
+  .shadow-soft {
+    box-shadow: var(--shadow-soft);
+  }
+  
+  .shadow-medium {
+    box-shadow: var(--shadow-medium);
+  }
+  
+  .shadow-strong {
+    box-shadow: var(--shadow-strong);
+  }
+  
+  /* Enhanced button styles */
+  .btn-brand {
+    @apply bg-brand-gradient text-white font-semibold rounded-lg shadow-soft hover:shadow-medium transition-all duration-300 hover:-translate-y-0.5;
+  }
+  
+  /* Enhanced card styles */
+  .card-elevated {
+    @apply bg-white rounded-xl shadow-soft hover:shadow-medium transition-all duration-300 hover:-translate-y-1;
+  }
+  
+  .card-surface {
+    @apply bg-surface-gradient rounded-xl shadow-soft border border-neutral-200/50;
+  }
+  
+  /* Chat message styles */
+  .message-own {
+    @apply bg-primary-500 text-white rounded-r-lg rounded-tl-lg shadow-soft max-w-xs ml-auto;
+  }
+  
+  .message-other {
+    @apply bg-surface-200 text-neutral-800 rounded-l-lg rounded-tr-lg shadow-soft max-w-xs mr-auto;
+  }
+  
+  /* Status indicators */
+  .status-online {
+    @apply bg-success-500 text-white;
+  }
+  
+  .status-offline {
+    @apply bg-neutral-400 text-white;
+  }
+  
+  .status-typing {
+    @apply bg-warning-500 text-white;
+  }
+  
+  /* Enhanced form styles */
+  .form-input-elevated {
+    @apply bg-white border-2 border-neutral-200 rounded-lg shadow-soft focus:border-primary-500 focus:shadow-medium transition-all duration-300;
+  }
+  
+  /* Loading states */
+  .loading-elevated {
+    @apply bg-surface-gradient rounded-lg shadow-soft p-4 animate-pulse;
+  }
+}
+
+@layer utilities {
+  @variants responsive {
+    .masonry {
+      column-gap: 6px;
+      column-count: 2;
+    }
+    .masonry-sm {
+      column-gap: 6px;
+      column-count: 2;
+    }
+    .masonry-md {
+      column-gap: 6px;
+      column-count: 3;
+    }
+    .masonry-lg {
+      column-gap: 6px;
+      column-count: 5;
+    }
+    .break-inside {
+      break-inside: avoid;
+    }
+  }
+  
+  /* Text gradient utilities */
+  .text-brand-gradient {
+    @apply bg-gradient-to-r from-primary-500 to-secondary-500 bg-clip-text text-transparent;
+  }
+  
+  .text-hero-gradient {
+    @apply bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent;
+  }
+  
+  /* Interactive utilities */
+  .hover-lift {
+    @apply hover:-translate-y-1 transition-transform duration-300;
+  }
+  
+  .hover-scale {
+    @apply hover:scale-105 transition-transform duration-300;
+  }
+  
+  .focus-ring {
+    @apply focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2;
+  }
+  
+  /* Animation utilities */
+  .animate-fade-in {
+    animation: fadeIn var(--animation-duration) var(--animation-timing);
+  }
+  
+  .animate-slide-up {
+    animation: slideUp var(--animation-duration) var(--animation-timing);
+  }
+  
+  .animate-bounce-subtle {
+    animation: bounceSubtle 3s infinite;
+  }
+}
+
+/* Custom animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes bounceSubtle {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+/* Responsive design enhancements */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

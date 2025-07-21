@@ -1,0 +1,44 @@
+
+# --- Build stage ---
+FROM node:24-alpine AS build
+
+WORKDIR /app
+
+# Install system dependencies for sharp
+# RUN apt-get update && apt-get install -y \
+#   libvips-dev \
+#   build-essential \
+#   python3
+
+RUN corepack enable
+
+COPY .yarnrc.yml .yarn ./
+COPY package.json yarn.lock ./
+RUN yarn install
+
+COPY . .
+
+# --- Production stage ---
+FROM node:24-alpine AS prod
+
+WORKDIR /app
+
+# # Only install runtime dependencies for sharp
+# RUN apt-get update && apt-get install -y \
+#   libvips-dev \
+#   python3 \
+#   && rm -rf /var/lib/apt/lists/*
+
+RUN corepack enable
+
+COPY --from=build /app/.yarnrc.yml ./
+COPY --from=build /app/.yarn ./.yarn
+COPY --from=build /app/package.json ./
+COPY --from=build /app/yarn.lock ./
+COPY --from=build /app/node_modules ./node_modules
+COPY --from=build /app/dist ./dist
+COPY --from=build /app/public ./public
+COPY --from=build /app/src ./src
+
+EXPOSE 3000
+CMD ["yarn", "dev"]
